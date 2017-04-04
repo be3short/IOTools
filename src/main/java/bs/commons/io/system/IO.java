@@ -2,19 +2,15 @@ package bs.commons.io.system;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import bs.commons.objects.identification.MethodIdentifier;
-import javafx.geometry.Side;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.BorderPane;
 
 public class IO
 {
+
+	private static CallingClass classIdentifier = new CallingClass();
+	private static HashMap<Class, IOConfig> ioConfig;
 
 	public static enum MessageCategory
 	{
@@ -44,6 +40,13 @@ public class IO
 	//	private static HashMap<MessageCategory, Boolean> printEnabled;
 
 	public static IOSettings settings = new IOSettings(IO.class, "bs");
+
+	private static IOFilter filter = new IOFilter();
+
+	public static void loadFilter(String file_path, String... package_names)
+	{
+		filter = IOFilter.loadAndUpdateFilter(file_path, package_names);
+	}
 
 	public static void setSettings(IOSettings set)
 	{
@@ -102,8 +105,12 @@ public class IO
 
 	public static void println(String line, MessageCategory category, Integer increment)
 	{
-		String newLine = supplementLine(line, category, increment);
-		printLocations.get(category).println(newLine);
+		System.out.println(classIdentifier.getCallingClass().getName());
+		if (filter.printStatus(classIdentifier.getCallingClass(), category))
+		{
+			String newLine = supplementLine(line, category, increment);
+			printLocations.get(category).println(newLine);
+		}
 	}
 
 	public static void debug(String line)
@@ -215,12 +222,12 @@ public class IO
 			if (settings.printCallingClass)
 			{
 
-				//String[] classPackage = MethodIdentifier.getCallerClassName(1).split("\\$")[0].split("\\.");
-				//String className = classPackage[classPackage.length - 1];
-				//if (!className.equals("CustomPrinterRuntimeTest"))
-				//{
-				//	supLine += "[" + classPackage[classPackage.length - 1] + "]";
-				//}
+				String[] classPackage = MethodIdentifier.getCallerCallerClassName().split("\\$")[0].split("\\.");
+				String className = classPackage[classPackage.length - 1];
+				if (!className.equals("CustomPrinterRuntimeTest"))
+				{
+					supLine += "[" + classPackage[classPackage.length - 1] + "]";
+				}
 			}
 			if (supLine.length() > 0)
 			{
@@ -241,4 +248,43 @@ public class IO
 		System.setErr(new PrintStream(err, true));
 	}
 
+	public static class CallingClass extends SecurityManager
+	{
+
+		public static final CallingClass INSTANCE = new CallingClass();
+
+		public Class[] getCallingClasses()
+		{
+			return getClassContext();
+		}
+
+		public Class getCallingClassz()
+		{
+			return getClassContext()[0];
+		}
+
+		public Class getCallingClass()
+		{
+			Class[] stack = getCallingClasses();
+			Integer ind = 0;
+			Class caller = stack[0];
+			while (caller.getPackage().getName().contains("bs.commons.io"))
+			{
+				caller = stack[++ind];
+			}
+			return caller;
+		}
+
+		public String getListOfCallingClasses()
+		{
+			Class[] classes = getClassContext();
+			String callStack = "Call stack\n";
+			for (int i = 0; i < classes.length; i++)
+			{
+				callStack += i + " " + classes[i].getName() + " " + classes[i].toString() + " "
+				+ classes[i].getEnclosingClass() + " " + classes[i].getSuperclass() + "\n";
+			}
+			return callStack;
+		}
+	}
 }

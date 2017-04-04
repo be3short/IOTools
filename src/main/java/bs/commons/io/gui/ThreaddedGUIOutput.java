@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 public class ThreaddedGUIOutput extends BorderPane
 {
 
+	private PrintStream ps;
 	private Console console;
 
 	public ThreaddedGUIOutput(boolean system_out)
@@ -25,10 +26,15 @@ public class ThreaddedGUIOutput extends BorderPane
 		setCenter(console.output);
 		if (system_out)
 		{
-			PrintStream ps = new PrintStream(console, true);
+			ps = new PrintStream(console, true);
 			System.setOut(ps);
 			System.setErr(ps);
 		}
+	}
+
+	public PrintStream getPrintStream()
+	{
+		return ps;
 	}
 
 	public static class Console extends RoutedOutput
