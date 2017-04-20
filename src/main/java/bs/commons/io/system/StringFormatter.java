@@ -1,6 +1,7 @@
 package bs.commons.io.system;
 
 import java.util.Calendar;
+import java.util.Set;
 
 import bs.commons.dimvars.values.Memory;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,6 +16,17 @@ public class StringFormatter
 	public static String getEvenHeader(String title, boolean following_space)
 	{
 		return getEvenHeader(title, following_space, true);
+	}
+
+	public static String getAppendedName(String name, Set<String> existing_names)
+	{
+		Integer appender = 1;
+		String newName = name;
+		while (existing_names.contains(newName))
+		{
+			newName = name + appender++;
+		}
+		return newName;
 	}
 
 	public static String getEvenHeader(String title, boolean following_space, boolean preceding_space)

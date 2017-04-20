@@ -41,11 +41,11 @@ public class IO
 
 	public static IOSettings settings = new IOSettings(IO.class, "bs");
 
-	private static IOFilter filter = new IOFilter();
+	//private static IOFilter filter = new IOFilter();
 
 	public static void loadFilter(String file_path, String... package_names)
 	{
-		filter = IOFilter.loadAndUpdateFilter(file_path, package_names);
+		//filter = IOFilter.loadAndUpdateFilter(file_path, package_names);
 	}
 
 	public static void setSettings(IOSettings set)
@@ -91,6 +91,7 @@ public class IO
 	{
 
 		println(line, MessageCategory.SYSTEM);
+
 	}
 
 	public static void out(String line)
@@ -98,17 +99,13 @@ public class IO
 		println(line, MessageCategory.OUTPUT);
 	}
 
-	public static void println(String line, MessageCategory category)
+	public static void println(String line, MessageCategory category)//, Integer increment)
 	{
-		println(line, category, 0);
-	}
-
-	public static void println(String line, MessageCategory category, Integer increment)
-	{
-		System.out.println(classIdentifier.getCallingClass().getName());
-		if (filter.printStatus(classIdentifier.getCallingClass(), category))
+		//System.out.println(classIdentifier.getCallingClass().getName());
+		//if (filter.printStatus(classIdentifier.getCallingClass()))//, category))
+		if (line != null)
 		{
-			String newLine = supplementLine(line, category, increment);
+			String newLine = supplementLine(line, category);//, increment);
 			printLocations.get(category).println(newLine);
 		}
 	}
@@ -195,12 +192,12 @@ public class IO
 	//		}
 	//		return filter;
 	//	}
-	private static String supplementLine(String line, MessageCategory category)
-	{
-		return supplementLine(line, category, 0);
-	}
+	//	private static String supplementLine(String line, MessageCategory category)
+	//	{
+	//		return supplementLine(line, category, 0);
+	//	}
 
-	private static String supplementLine(String line, MessageCategory category, Integer increment)
+	private static String supplementLine(String line, MessageCategory category)//, Integer increment)
 	{
 		if (settings.supplementMessages)
 		{
