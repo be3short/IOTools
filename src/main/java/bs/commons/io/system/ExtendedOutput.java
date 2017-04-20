@@ -28,7 +28,7 @@ public class ExtendedOutput extends OutputStream
 
 	public void printLine()
 	{
-		IO.println(line, category, -1);
+		IO.println(line, category);
 		line = "";
 	}
 
