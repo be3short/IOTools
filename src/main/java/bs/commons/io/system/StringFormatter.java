@@ -3,7 +3,7 @@ package bs.commons.io.system;
 import java.util.Calendar;
 import java.util.Set;
 
-import bs.commons.dimvars.values.Memory;
+import bs.commons.unitvars.values.Memory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -288,7 +288,7 @@ public class StringFormatter
 	public static String getMemoryUsageInfoString()
 	{
 		Memory memoryUsed = Memory
-		.newByteValue(Double.valueOf(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+		.newBytesValue(Double.valueOf(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 		String returnString = "[" + Math.round(memoryUsed.megabytes()) + "/";
 		//	+ Math.round((MemoryVariable.getMaximumAvailableSystemMemory().getValue(MemoryUnits.MB))) + "](Mb)";
 		return returnString;
