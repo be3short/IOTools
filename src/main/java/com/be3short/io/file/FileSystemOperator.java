@@ -1,4 +1,4 @@
-package bs.commons.io.file;
+package com.be3short.io.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

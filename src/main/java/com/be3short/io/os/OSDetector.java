@@ -1,4 +1,4 @@
-package bs.commons.io.os;
+package com.be3short.io.os;
 
 public class OSDetector
 {
