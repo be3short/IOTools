@@ -119,7 +119,7 @@ public class FileSpecifications<T extends FileFormat>
 
 	public void prependDirectory(String prepend)
 	{
-		System.out.println("newdir " + prepend + " " + location);
+		// System.out.println("newdir " + prepend + " " + location);
 		String newDir = checkSlashes(prepend, location);// prepend);
 		location = newDir;
 	}
@@ -129,7 +129,8 @@ public class FileSpecifications<T extends FileFormat>
 		if (beginning.contains("/"))
 		{
 			String[] split = beginning.split("/");
-			System.out.println(end + " " + beginning + " " + split[split.length - 1] + " " + beginning.contains("/"));
+			// System.out.println(end + " " + beginning + " " + split[split.length - 1] + " " +
+			// beginning.contains("/"));
 			// if (!(beginning.contains("/") || end.substring(0, 1).contains("/")) || split[split.length - 1].length() <
 			// 1)
 			if (split[split.length - 1].length() > 0 && !end.substring(0, 1).contains("/"))
