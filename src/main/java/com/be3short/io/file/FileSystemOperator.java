@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Deprecated
 public class FileSystemOperator
 {
 

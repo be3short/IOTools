@@ -6,6 +6,8 @@ public enum CompressionFormat
 {
 	GZIP(
 		"gz"),
+	ZIP(
+		".zip"),
 	NONE(
 		"txtss"),
 	UNKNOWN(

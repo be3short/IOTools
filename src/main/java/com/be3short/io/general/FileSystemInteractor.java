@@ -4,13 +4,24 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+import com.be3short.io.compression.CompressionFormat;
 
 public class FileSystemInteractor
 {
@@ -273,6 +284,12 @@ public class FileSystemInteractor
 		createOutputFile(file, file_contents);
 	}
 
+	public static void createOutputFile(String path, String file_contents, CompressionFormat format)
+	{
+		File file = new File(path);
+		createOutputFile(file, file_contents, format);
+	}
+
 	public static void createOutputFile(File file, String file_contents)
 	{
 		checkDirectory(file.getParent(), true);
@@ -292,6 +309,66 @@ public class FileSystemInteractor
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static void createOutputFile(File file, String file_contents, CompressionFormat format)
+	{
+		checkDirectory(file.getParent(), true);
+		try (Writer writer = getCompressionWriter(file, format)) // create
+		// the
+		// output
+		// file
+		// and
+		// initialize
+		// file
+		// writer
+		{
+
+			writer.write(file_contents); // write the line to the file
+			writer.close(); // close the file
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static Writer getCompressionWriter(File file, CompressionFormat compression_format) throws Exception
+	{
+		Writer writer = null;
+		switch (compression_format)
+		{
+
+		case ZIP:
+			writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(file))));
+			break;
+		default:
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+			break;
+		}
+		return writer;
+	}
+
+	public static BufferedReader getCompressionReader(File file) throws Exception
+	{
+		return new BufferedReader(new FileReader(file));
+	}
+
+	public static ObjectInputStream getCompressionReader(File file, CompressionFormat compression_format)
+	throws Exception
+	{
+		ObjectInputStream reader = null;
+		switch (compression_format)
+		{
+
+		case GZIP:
+
+			reader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(file)));
+			break;
+		default:
+			reader = null;
+			break;
+		}
+		return reader;
 	}
 
 	public static void createOutputFile(String directory, String file_name, String file_contents)
