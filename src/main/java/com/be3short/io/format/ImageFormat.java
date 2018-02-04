@@ -1,8 +1,36 @@
 package com.be3short.io.format;
 
-public<F extends FileFormat>ImageFormat implements FileFormat{{public static enum ImgFormat}
+public enum ImageFormat implements FileFormat
 {
-	PNG("PNG",".png",true,true),JPEG("JPEG",".jpg",true,true),GIF("gif",".gif",true,true),BMP("BMP",".bmp",true,true),SVG("SVG",".svg",false),EPS("EPS",".eps",false);
+
+	PNG(
+		"PNG",
+		".png",
+		true,
+		true),
+	JPEG(
+		"JPEG",
+		".jpg",
+		true,
+		true),
+	GIF(
+		"gif",
+		".gif",
+		true,
+		true),
+	BMP(
+		"BMP",
+		".bmp",
+		true,
+		true),
+	SVG(
+		"SVG",
+		".svg",
+		false),
+	EPS(
+		"EPS",
+		".eps",
+		false);
 
 	public final String extension;
 	public final String name;
@@ -25,8 +53,6 @@ public<F extends FileFormat>ImageFormat implements FileFormat{{public static enu
 		this.extension = extension;
 	}
 
-	}
-
 	public static ImageFormat getMatch(String name)
 	{
 		ImageFormat match = null;
@@ -44,46 +70,15 @@ public<F extends FileFormat>ImageFormat implements FileFormat{{public static enu
 	@Override
 	public String getFileExtension()
 	{
-		return extension;
+		// TODO Auto-generated method stub
+		return this.extension;
 	}
 
 	@Override
 	public String getFormatName()
 	{
-		return name;
-	}
-
-	public FileSpecifications<ImageFormat> createFileSpecs(String file)
-	{
-		return new FileSpecifications<ImageFormat>(file, this);
-	}
-
-	@Override
-	public <F extends FileFormat> F getDefaultFormat()
-	{
 		// TODO Auto-generated method stub
-		return ImageFormat.EPS;
+		return this.name();
 	}
 
 }
-
-	@Override
-	public String getFileExtension()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getFormatName()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <F extends FileFormat> F getDefaultFormat()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}

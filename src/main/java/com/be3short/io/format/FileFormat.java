@@ -9,8 +9,6 @@ public interface FileFormat
 
 	public String getFormatName();
 
-	public <F extends FileFormat> F getDefaultFormat();
-
 	public static <F extends FileFormat> boolean isFileFormat(File file, F format)
 	{
 		Integer extensionLength = format.getFileExtension().length();
