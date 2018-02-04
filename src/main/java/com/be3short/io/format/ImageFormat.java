@@ -1,6 +1,6 @@
 package com.be3short.io.format;
 
-public enum ImageFormat implements FileFormat
+public enum ImageFormat implements FileFormat<ImageFormat>
 {
 
 	PNG(
@@ -32,6 +32,7 @@ public enum ImageFormat implements FileFormat
 		".eps",
 		false);
 
+	private final FileToolbox<ImageFormat> toolbox;
 	public final String extension;
 	public final String name;
 	public final boolean image;
@@ -43,6 +44,7 @@ public enum ImageFormat implements FileFormat
 		this.image = image;
 		this.needsBackground = false;
 		this.extension = extension;
+		toolbox = new FileToolbox<ImageFormat>(this);
 	}
 
 	private ImageFormat(String name, String extension, boolean image, boolean background)
@@ -51,6 +53,8 @@ public enum ImageFormat implements FileFormat
 		this.image = image;
 		this.needsBackground = background;
 		this.extension = extension;
+		toolbox = new FileToolbox<ImageFormat>(this);
+
 	}
 
 	public static ImageFormat getMatch(String name)
@@ -79,6 +83,13 @@ public enum ImageFormat implements FileFormat
 	{
 		// TODO Auto-generated method stub
 		return this.name();
+	}
+
+	@Override
+	public FileToolbox<ImageFormat> getTools()
+	{
+		// TODO Auto-generated method stub
+		return toolbox;
 	}
 
 }

@@ -2,7 +2,7 @@ package com.be3short.io.format;
 
 import java.io.File;
 
-public class FileSpecifications<T extends FileFormat>
+public class FileSpecifications<T extends FileFormat<T>>
 {
 
 	private String location;
@@ -22,6 +22,7 @@ public class FileSpecifications<T extends FileFormat>
 
 	public boolean isNullFile()
 	{
+		ImageFormat f = ImageFormat.BMP;
 		return location == null;
 	}
 
