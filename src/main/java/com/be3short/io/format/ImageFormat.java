@@ -67,13 +67,13 @@ public enum ImageFormat implements FileFormat
 	}
 
 	@Override
-	public String extension()
+	public String getFileExtension()
 	{
 		return extension;
 	}
 
 	@Override
-	public String label()
+	public String getFormatName()
 	{
 		return name;
 	}

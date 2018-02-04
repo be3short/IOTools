@@ -3,7 +3,7 @@ package com.be3short.io.format;
 public interface FileFormat
 {
 
-	public String extension();
+	public String getFileExtension();
 
-	public String label();
+	public String getFormatName();
 }

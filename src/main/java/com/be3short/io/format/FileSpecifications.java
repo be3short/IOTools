@@ -93,7 +93,7 @@ public class FileSpecifications<T extends FileFormat>
 	{
 		File adjustedLocation = adj_location;
 		int appendIndex = 1;
-		while (new File(adjustedLocation.getAbsolutePath() + format.extension()).exists())
+		while (new File(adjustedLocation.getAbsolutePath() + format.getFileExtension()).exists())
 		{
 			adjustedLocation = new File(
 			adj_location.getParent() + "/" + appendIndex++ + "_" + adjustedLocation.getName());
