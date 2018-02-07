@@ -1,15 +1,25 @@
 package com.be3short.io.format;
 
 import java.io.File;
+import java.util.ArrayList;
 
-public class FileToolbox<F extends FileFormat<F>>
+import com.be3short.io.general.FileSystemInteractor;
+
+public class FileFormatUtilities<F extends FileFormatProperties<F>>
 {
 
+	static ArrayList<FileFormatUtilities<?>> all = new ArrayList<FileFormatUtilities<?>>();
 	F fileFormat;
+	Class<F> fileClass;
 
-	public FileToolbox(F format)
+	public FileFormatUtilities(F format)
 	{
 		this.fileFormat = format;
+		fileClass = (Class<F>) format.getClass();
+		if (!all.contains(this))
+		{
+			all.add(this);
+		}
 	}
 
 	public <F> boolean isFileFormat(File file)
@@ -18,7 +28,7 @@ public class FileToolbox<F extends FileFormat<F>>
 
 		if (file.getName().length() > extensionLength)
 		{
-			if (file.getName().substring(extensionLength - 1).contains(fileFormat.getFileExtension()))
+			if (file.getName().substring(extensionLength).contains(fileFormat.getFileExtension()))
 			{
 				return true;
 			}
@@ -40,31 +50,22 @@ public class FileToolbox<F extends FileFormat<F>>
 	 */
 	@SuppressWarnings(
 	{ "unchecked", "null" })
-	public static <T extends FileFormat<T>> T checkFormat(File file)
+	public <T extends FileFormatProperties<T>> T checkFormat(File file)
 	{
-		T matching = null;
-		if (matching == null)
-		{
-			checkFormat(file);
-		}
-		T[] allFormats = (T[]) matching.getClass().getEnumConstants();
-		for (T fileformat : allFormats)
+
+		for (FileFormatUtilities<?> box : all)
 			try
 			{
-				Integer extLength = fileformat.getFileExtension().length();
-				if (file.getName().length() > extLength)
+				if (box.hasExtensionAppended(file))
 				{
-					if (file.getName().substring(extLength).contains(fileformat.getFileExtension()))
-					{
-						matching = fileformat;
-					}
+					return (T) box.getFileFormat();
 				}
 			} catch (Exception badFile)
 			{
 				System.err.println("Unable to determine what format the file " + file + " was");
 
 			}
-		return matching;
+		return null;
 
 	}
 
@@ -105,16 +106,18 @@ public class FileToolbox<F extends FileFormat<F>>
 	 * @return the file with the appended extension
 	 *
 	 */
-	public File getExtensionAppended(File file)
+	public File appendExtension(File file)
 	{
 		File adjustedFile = file;
 		try
 		{
 
-			Boolean needsExtension = hasExtensionAppended(file);
+			Boolean needsExtension = !hasExtensionAppended(file);
 			if (needsExtension)
 			{
 				adjustedFile = new File(file.getAbsoluteFile() + fileFormat.getFileExtension());
+				checkDirectoryExistence(adjustedFile);
+
 			}
 		} catch (
 
@@ -125,6 +128,29 @@ public class FileToolbox<F extends FileFormat<F>>
 		}
 		return adjustedFile;
 
+	}
+
+	public void checkDirectoryExistence(File file)
+	{
+		FileSystemInteractor.checkDirectory(file.getParentFile(), true);
+		try
+		{
+			//file.createNewFile();
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public F getFileFormat()
+	{
+		return fileFormat;
+	}
+
+	public Class<F> getFileClass()
+	{
+		return fileClass;
 	}
 
 }

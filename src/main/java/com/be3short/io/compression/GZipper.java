@@ -20,7 +20,7 @@ public class GZipper
 			String inStr = in.readObject().toString();
 			//System.out.println(inStr);
 			contents = (T) (inStr);
-	
+
 		} catch (Exception getFirstLineError)
 		{
 			getFirstLineError.printStackTrace();
@@ -32,25 +32,17 @@ public class GZipper
 	{
 		FileSystemInteractor.checkDirectory(file.getParent(), true);
 		try (ObjectOutputStream writer = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(file)))) // create
-		// the
-		// output
-		// file
-		// and
-		// initialize
-		// file
-		// writer
 		{
-	
-			//	String value = new String(object.getBytes(StandardCharsets.ISO_8859_1));
+
 			writer.writeObject(object);
 			writer.flush();
-			//	writer.writeUTF(value); // write the line to the file
-			writer.close(); // close the file
+			writer.close();
+
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-	
+
 	}
 
 }
